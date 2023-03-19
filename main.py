@@ -1,9 +1,9 @@
 from PyQt5 import QtWidgets
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import QFileSystemModel, QAction, QMenu
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
+from PyQt5.QtWidgets import QFileSystemModel, QAction, QMenu, QDesktopWidget
+from PyQt5.QtCore import pyqtSlot
 from ui_files.mainWindow import Ui_MainWindow
+from create_archive.createArchive import create
 
 
 class winZip(QtWidgets.QMainWindow):
@@ -12,21 +12,34 @@ class winZip(QtWidgets.QMainWindow):
         self.parent = Ui_MainWindow()
         self.parent.setupUi(self)
         self.custom_toolBar()
-        # self.treeView_widget('/home/ismail')
+
+        # Open Window Center
+        qtRectangle = self.frameGeometry()
+        centerPoint = QDesktopWidget().availableGeometry().center()
+        qtRectangle.moveCenter(centerPoint)
+        self.move(qtRectangle.topLeft())
+        qtRectangle = self.frameGeometry()
+        centerPoint = QDesktopWidget().availableGeometry().center()
+        qtRectangle.moveCenter(centerPoint)
+        self.move(qtRectangle.topLeft())
 
     def custom_toolBar(self):
         # TODO Menu Action List
-        new_archive_action = QAction("New Archive", self)
+        self.menu = QMenu()
+        self.new_archive_action = QAction("New Archive", self)
+        self.new_archive_action.triggered.connect(self.create_archive)
         open_archive_action = QAction("Open Archive", self)
 
         # Added menu item after create menu
-        menu = QMenu()
-        menu.addAction(new_archive_action)
-        menu.addSeparator()
-        menu.addAction(open_archive_action)
+        self.menu.addAction(self.new_archive_action)
+        self.menu.addSeparator()
+        self.menu.addAction(open_archive_action)
 
-        self.parent.menu_button.setMenu(menu)
+        self.parent.menu_button.setMenu(self.menu)
 
+    def create_archive(self):
+        CreateArchive = create(self)
+        CreateArchive.show()
 
 
 if __name__ == "__main__":
