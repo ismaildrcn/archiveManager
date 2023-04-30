@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui_files/mainWindow .ui'
+# Form implementation generated from reading ui file 'mainWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import icons_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -21,6 +21,16 @@ class Ui_MainWindow(object):
 "}\n"
 "QPushButton::menu-indicator{\n"
 "    width:0px;\n"
+"}\n"
+"\n"
+"QLineEdit{\n"
+"    border-radius:10px;\n"
+"    padding-left:10px;\n"
+"    padding-right:10px;\n"
+"}\n"
+"\n"
+"QLineEdit:focus{\n"
+"    border: 2px solid rgb(0, 103, 255);\n"
 "}")
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -108,6 +118,61 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.widget_3.sizePolicy().hasHeightForWidth())
         self.widget_3.setSizePolicy(sizePolicy)
         self.widget_3.setObjectName("widget_3")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.widget_3)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.widget_7 = QtWidgets.QWidget(self.widget_3)
+        self.widget_7.setObjectName("widget_7")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.widget_7)
+        self.horizontalLayout_6.setContentsMargins(0, 0, -1, 0)
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.widget_9 = QtWidgets.QWidget(self.widget_7)
+        self.widget_9.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.widget_9.setObjectName("widget_9")
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.widget_9)
+        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
+        self.back_button = QtWidgets.QPushButton(self.widget_9)
+        self.back_button.setText("")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/icons/icons/nav-arrow-left.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.back_button.setIcon(icon3)
+        self.back_button.setIconSize(QtCore.QSize(28, 28))
+        self.back_button.setObjectName("back_button")
+        self.horizontalLayout_7.addWidget(self.back_button)
+        self.forward_button = QtWidgets.QPushButton(self.widget_9)
+        self.forward_button.setText("")
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/icons/icons/nav-arrow-right.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.forward_button.setIcon(icon4)
+        self.forward_button.setIconSize(QtCore.QSize(28, 28))
+        self.forward_button.setObjectName("forward_button")
+        self.horizontalLayout_7.addWidget(self.forward_button)
+        self.horizontalLayout_6.addWidget(self.widget_9)
+        self.widget_10 = QtWidgets.QWidget(self.widget_7)
+        self.widget_10.setObjectName("widget_10")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.widget_10)
+        self.verticalLayout_3.setContentsMargins(30, -1, 30, -1)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.lineEdit_path = QtWidgets.QLineEdit(self.widget_10)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lineEdit_path.sizePolicy().hasHeightForWidth())
+        self.lineEdit_path.setSizePolicy(sizePolicy)
+        self.lineEdit_path.setObjectName("lineEdit_path")
+        self.verticalLayout_3.addWidget(self.lineEdit_path)
+        self.horizontalLayout_6.addWidget(self.widget_10)
+        self.verticalLayout_2.addWidget(self.widget_7, 0, QtCore.Qt.AlignTop)
+        self.widget_8 = QtWidgets.QWidget(self.widget_3)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widget_8.sizePolicy().hasHeightForWidth())
+        self.widget_8.setSizePolicy(sizePolicy)
+        self.widget_8.setObjectName("widget_8")
+        self.verticalLayout_2.addWidget(self.widget_8)
         self.verticalLayout.addWidget(self.widget_3)
         self.horizontalLayout.addWidget(self.widget)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -123,4 +188,4 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "Extract"))
         self.label.setText(_translate("MainWindow", "Archive Manager"))
-from ui_files import icons_rc
+        self.forward_button.setShortcut(_translate("MainWindow", "Enter"))
