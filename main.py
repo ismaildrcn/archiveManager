@@ -9,9 +9,13 @@ from create_archive.createArchive import create
 class winZip(QtWidgets.QMainWindow):
     def __init__(self):
         super(winZip, self).__init__()
+        self.archive_path = None
         self.parent = Ui_MainWindow()
         self.parent.setupUi(self)
+        self.createArchive = create(self)
+
         self.custom_toolBar()
+
 
         # Open Window Center
         qtRectangle = self.frameGeometry()
@@ -27,7 +31,7 @@ class winZip(QtWidgets.QMainWindow):
         # TODO Menu Action List
         self.menu = QMenu()
         self.new_archive_action = QAction("New Archive", self)
-        self.new_archive_action.triggered.connect(self.create_archive)
+        self.new_archive_action.triggered.connect(self.create_archive_file)
         open_archive_action = QAction("Open Archive", self)
 
         # Added menu item after create menu
@@ -37,10 +41,15 @@ class winZip(QtWidgets.QMainWindow):
 
         self.parent.menu_button.setMenu(self.menu)
 
-    def create_archive(self):
-        CreateArchive = create(self)
-        CreateArchive.show()
+    def create_archive_file(self):
+        self.createArchive.show()
+        self.createArchive.add_location()
 
+        self.createArchive.parent.create_button.clicked.connect(self.connect_path)
+
+    def connect_path(self):
+        self.archive_path = self.createArchive.create_archive_path()
+        self.parent.lineEdit_path.setText(self.archive_path)
 
 if __name__ == "__main__":
     import sys

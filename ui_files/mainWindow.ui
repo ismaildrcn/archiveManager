@@ -103,7 +103,7 @@ QLineEdit:focus{
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
-              <widget class="QPushButton" name="pushButton">
+              <widget class="QPushButton" name="pushButton_extract">
                <property name="text">
                 <string>Extract</string>
                </property>
@@ -120,7 +120,7 @@ QLineEdit:focus{
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_2">
+              <widget class="QPushButton" name="pushButton_add_file">
                <property name="text">
                 <string/>
                </property>
