@@ -62,7 +62,9 @@ class Ui_Form(object):
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.widget = QtWidgets.QWidget(Form)
-        self.widget.setStyleSheet("background-color: rgb(136, 138, 133);")
+        self.widget.setStyleSheet("background-color: rgb(136, 138, 133);\n"
+"border-top-left-radius:15px;\n"
+"border-top-right-radius:15px;")
         self.widget.setObjectName("widget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -115,7 +117,11 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget_2.sizePolicy().hasHeightForWidth())
         self.widget_2.setSizePolicy(sizePolicy)
-        self.widget_2.setStyleSheet("background-color: rgb(211, 215, 207);")
+        self.widget_2.setStyleSheet("QWidget#widget_2{\n"
+"background-color: rgb(211, 215, 207);\n"
+"border-bottom-left-radius:15px;\n"
+"border-bottom-right-radius:15px;\n"
+"}")
         self.widget_2.setObjectName("widget_2")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.widget_2)
         self.verticalLayout_2.setContentsMargins(15, 0, 15, 0)
@@ -151,12 +157,12 @@ class Ui_Form(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.lineEdit = QtWidgets.QLineEdit(self.widget_11)
-        self.lineEdit.setMinimumSize(QtCore.QSize(0, 25))
+        self.archive_name = QtWidgets.QLineEdit(self.widget_11)
+        self.archive_name.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.lineEdit.setFont(font)
-        self.lineEdit.setStyleSheet("QLineEdit{\n"
+        self.archive_name.setFont(font)
+        self.archive_name.setStyleSheet("QLineEdit{\n"
 "    background-color: rgb(186, 189, 182);\n"
 "    border: none;\n"
 "    border-radius:7px;\n"
@@ -166,9 +172,9 @@ class Ui_Form(object):
 "QLineEdit:focus{\n"
 "    border: 2px solid rgb(0, 103, 255);\n"
 "}")
-        self.lineEdit.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.lineEdit.setObjectName("lineEdit")
-        self.verticalLayout_4.addWidget(self.lineEdit)
+        self.archive_name.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.archive_name.setObjectName("archive_name")
+        self.verticalLayout_4.addWidget(self.archive_name)
         self.horizontalLayout_5.addWidget(self.widget_11)
         self.widget_12 = QtWidgets.QWidget(self.widget_8)
         self.widget_12.setMaximumSize(QtCore.QSize(120, 16777215))
@@ -212,7 +218,7 @@ class Ui_Form(object):
         self.comboBox_archive_location = QtWidgets.QComboBox(self.widget_10)
         self.comboBox_archive_location.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
-        font.setPointSize(13)
+        font.setPointSize(11)
         self.comboBox_archive_location.setFont(font)
         self.comboBox_archive_location.setStyleSheet("background-color: rgb(186, 189, 182);")
         self.comboBox_archive_location.setObjectName("comboBox_archive_location")
@@ -247,4 +253,4 @@ class Ui_Form(object):
         self.comboBox_archive_format.setItemText(4, _translate("Form", ".tar.xz"))
         self.label_3.setText(_translate("Form", "Location:"))
         self.label_4.setText(_translate("Form", "Other Options"))
-from ui_files import icons_rc
+import icons_rc
