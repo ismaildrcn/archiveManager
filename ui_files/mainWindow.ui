@@ -87,7 +87,7 @@ QLineEdit:focus{
           <item>
            <widget class="QWidget" name="widget_6" native="true">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="minimumSize">
              <size>
@@ -104,6 +104,9 @@ QLineEdit:focus{
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
               <widget class="QPushButton" name="pushButton_extract">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="text">
                 <string>Extract</string>
                </property>
@@ -120,13 +123,36 @@ QLineEdit:focus{
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_add_file">
+              <widget class="QPushButton" name="pushButton_add_folder">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="text">
                 <string/>
                </property>
                <property name="icon">
                 <iconset resource="icons.qrc">
                  <normaloff>:/icons/icons/add-folder.svg</normaloff>:/icons/icons/add-folder.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_add_file">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="icons.qrc">
+                 <normaloff>:/icons/icons/add-database-script.svg</normaloff>:/icons/icons/add-database-script.svg</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -337,6 +363,11 @@ QLineEdit:focus{
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_8">
+             <item>
+              <widget class="QTreeWidget" name="treeWidget"/>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>
