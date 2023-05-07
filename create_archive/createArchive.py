@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import QDialog, QDesktopWidget
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QIcon, QPixmap
 from ui_files.createNewArchive import Ui_Form
-from ui_files.mainWindow import Ui_MainWindow
 
 
 class create(QDialog):
@@ -23,6 +22,7 @@ class create(QDialog):
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.parent.setupUi(self)
+        self.parent.archive_name.setFocus(True)
         self.parent.create_button.setEnabled(False)
 
         # Every time open Create Form in center display
@@ -40,7 +40,6 @@ class create(QDialog):
 
         # print(self.archive_path)
 
-
     def close_window(self):
         self.parent.cancel_button.clicked.connect(lambda: self.close())
 
@@ -52,6 +51,7 @@ class create(QDialog):
                     if item[0].isupper():
                         self.parent.comboBox_archive_location.addItem(item)
         self.parent.archive_name.textChanged.connect(self.change_button_state)
+
     def create_archive_path(self):
         self.archive_name = self.parent.archive_name.text()
         self.archive_location = self.parent.comboBox_archive_location.currentText()

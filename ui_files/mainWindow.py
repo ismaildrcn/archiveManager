@@ -15,6 +15,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
+        MainWindow.setMinimumSize(QtCore.QSize(800, 600))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setStyleSheet("QPushButton{\n"
 "    border: None;\n"
@@ -186,7 +187,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.widget_8)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.treeWidget = QtWidgets.QTreeWidget(self.widget_8)
+        font = QtGui.QFont()
+        font.setPointSize(13)
+        self.treeWidget.setFont(font)
         self.treeWidget.setObjectName("treeWidget")
+        self.treeWidget.headerItem().setText(0, "1")
         self.horizontalLayout_8.addWidget(self.treeWidget)
         self.verticalLayout_2.addWidget(self.widget_8)
         self.verticalLayout.addWidget(self.widget_3)
