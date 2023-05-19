@@ -109,7 +109,7 @@ QLineEdit:focus{
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
-              <widget class="QPushButton" name="pushButton_extract">
+              <widget class="QPushButton" name="pushButton_compress_extract">
                <property name="enabled">
                 <bool>false</bool>
                </property>
@@ -118,7 +118,7 @@ QLineEdit:focus{
                </property>
                <property name="icon">
                 <iconset resource="icons.qrc">
-                 <normaloff>:/icons/icons/compress.svg</normaloff>:/icons/icons/compress.svg</iconset>
+                 <normaloff>:/icons/icons/de-compress.svg</normaloff>:/icons/icons/de-compress.svg</iconset>
                </property>
                <property name="iconSize">
                 <size>

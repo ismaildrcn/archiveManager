@@ -3,12 +3,14 @@ import datetime
 
 from PyQt5 import QtWidgets
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import QAction, QMenu, QDesktopWidget, QFileSystemModel, QListWidgetItem
+from PyQt5.QtWidgets import QAction, QMenu, QDesktopWidget, QFileSystemModel, QTreeWidgetItem
+from PyQt5.QtCore import pyqtSlot
 
 from ui_files.mainWindow import Ui_MainWindow
 
 from create_archive.createArchive import create
 from fileSystem.filehandler import FileHandler
+from running.compress_extract import Compress
 
 
 class RunHandler(QtWidgets.QMainWindow):
@@ -17,6 +19,10 @@ class RunHandler(QtWidgets.QMainWindow):
         self.archive_path = None
         self.parent = Ui_MainWindow()
         self.parent.setupUi(self)
+
+        self.parent.treeWidget.itemChanged.connect(self.on_item_changed)
+
+        self.compress = Compress(self)
         self.createArchive = create(self)
         self.fileHandler = FileHandler(self)
 
@@ -26,6 +32,17 @@ class RunHandler(QtWidgets.QMainWindow):
 
         self.icon_type = {'folder': ':/icons/icons/folder.svg',
                           'file': ':/icons/icons/empty-page.svg'}
+        self.folder_list = []
+        self.file_list = []
+        self.operation = {
+            'base_path': os.path.expanduser('~'),
+            'save_path': None,
+            'file_folder_list': {
+                'folder': [],
+                'file': []
+            },
+            'archive_type': None
+            }
 
 
         self.mainLoop()
@@ -47,6 +64,7 @@ class RunHandler(QtWidgets.QMainWindow):
 
         self.model = QFileSystemModel()
         self.model.setRootPath('')
+        self.parent.pushButton_compress_extract.clicked.connect(self.compress_extract_clicked)
 
     def custom_toolBar(self):
         # TODO Menu Action List
@@ -65,8 +83,11 @@ class RunHandler(QtWidgets.QMainWindow):
     def create_archive_file(self):
         self.createArchive.show()
         self.createArchive.add_location()
-
         self.createArchive.parent.create_button.clicked.connect(self.connect_path)
+
+        # Clicked new_archive_create. changed type to pushButton_compress_extract.
+        self.parent.pushButton_compress_extract.setText('Compress')
+        self.parent.pushButton_compress_extract.setIcon(QtGui.QIcon(':icons/icons/compress.svg'))
 
     def connect_path(self):
         self.archive_path = self.createArchive.create_archive_path()
@@ -76,10 +97,12 @@ class RunHandler(QtWidgets.QMainWindow):
 
     def add_folder_clicked(self):
         paths = self.fileHandler.select_folders()
+        self.folder_list.extend(paths)
         self.write_treeWidget(paths, icon=0)
 
     def add_file_clicked(self):
         paths = self.fileHandler.select_files()
+        self.file_list.extend(paths)
         self.write_treeWidget(paths, icon=1)
 
     def write_treeWidget(self, paths, icon):
@@ -109,3 +132,16 @@ class RunHandler(QtWidgets.QMainWindow):
             date = str(datetime.datetime.fromtimestamp(last_modified))  # '2023-05-01 19:28:07.323678'
             time_value = self.fileHandler.date_modified(date)
             item.setText(3, time_value)
+
+        self.operation['save_path'] = self.archive_path
+        self.operation['archive_type'] = self.createArchive.archive_format
+
+    def compress_extract_clicked(self):
+        self.operation['file_folder_list']['folder'] = self.folder_list
+        self.operation['file_folder_list']['file'] = self.file_list
+        self.compress.compress_file()
+
+
+    @pyqtSlot(QTreeWidgetItem, int)
+    def on_item_changed(self, item, column):
+        self.parent.pushButton_compress_extract.setEnabled(True)
