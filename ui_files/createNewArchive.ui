@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Create New Archive</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QPushButton{
@@ -372,11 +372,6 @@ QLineEdit:focus{
               </item>
               <item>
                <property name="text">
-                <string>.rar</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
                 <string>.tar</string>
                </property>
               </item>
@@ -388,6 +383,11 @@ QLineEdit:focus{
               <item>
                <property name="text">
                 <string>.tar.xz</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>.tar.bz2</string>
                </property>
               </item>
              </widget>

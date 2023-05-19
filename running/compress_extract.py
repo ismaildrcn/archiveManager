@@ -1,6 +1,7 @@
 import os
 import zipfile
 import tarfile
+from rarfile import RarFile
 
 
 class Compress():
@@ -21,8 +22,6 @@ class Compress():
                 select_files=self.compress_file_list,
                 mode='w'
             )
-        elif self._parent.operation['archive_type'] == '.rar':
-            pass
         elif self._parent.operation['archive_type'] == '.tar':
             self.extend_compress_file()
             self.tar_file(
@@ -43,6 +42,13 @@ class Compress():
                 path=self._parent.archive_path,
                 select_files=self.compress_file_list,
                 mode='w:xz'
+            )
+        elif self._parent.operation['archive_type'] == '.tar.bz2':
+            self.extend_compress_file()
+            self.tar_file(
+                path=self._parent.archive_path,
+                select_files=self.compress_file_list,
+                mode='w:bz2'
             )
         else:
             print("Unidentified Archive Type")

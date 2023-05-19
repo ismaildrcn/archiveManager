@@ -241,16 +241,16 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "Create New Archive"))
         self.cancel_button.setText(_translate("Form", "Cancel"))
         self.label.setText(_translate("Form", "New Archive"))
         self.create_button.setText(_translate("Form", "Create"))
         self.label_2.setText(_translate("Form", "Filename:"))
         self.comboBox_archive_format.setItemText(0, _translate("Form", ".zip"))
-        self.comboBox_archive_format.setItemText(1, _translate("Form", ".rar"))
-        self.comboBox_archive_format.setItemText(2, _translate("Form", ".tar"))
-        self.comboBox_archive_format.setItemText(3, _translate("Form", ".tar.gz"))
-        self.comboBox_archive_format.setItemText(4, _translate("Form", ".tar.xz"))
+        self.comboBox_archive_format.setItemText(1, _translate("Form", ".tar"))
+        self.comboBox_archive_format.setItemText(2, _translate("Form", ".tar.gz"))
+        self.comboBox_archive_format.setItemText(3, _translate("Form", ".tar.xz"))
+        self.comboBox_archive_format.setItemText(4, _translate("Form", ".tar.bz2"))
         self.label_3.setText(_translate("Form", "Location:"))
         self.label_4.setText(_translate("Form", "Other Options"))
 import icons_rc
