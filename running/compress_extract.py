@@ -2,6 +2,7 @@ import os
 import zipfile
 import tarfile
 
+
 class Compress():
     def __init__(self, parent=None):
         self._file_list = None
@@ -30,9 +31,19 @@ class Compress():
                 mode='w'
             )
         elif self._parent.operation['archive_type'] == '.tar.gz':
-            pass
+            self.extend_compress_file()
+            self.tar_file(
+                path=self._parent.archive_path,
+                select_files=self.compress_file_list,
+                mode='w:gz'
+            )
         elif self._parent.operation['archive_type'] == '.tar.xz':
-            pass
+            self.extend_compress_file()
+            self.tar_file(
+                path=self._parent.archive_path,
+                select_files=self.compress_file_list,
+                mode='w:xz'
+            )
         else:
             print("Unidentified Archive Type")
 
@@ -91,3 +102,7 @@ class Compress():
                 tarHandler.add(file, arcname=os.path.basename(file))
         print("All files have been written to the archive.")
         tarHandler.close()
+
+
+class Extract():
+    pass

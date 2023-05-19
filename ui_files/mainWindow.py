@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
 "\n"
 "QLineEdit{\n"
 "    border-radius:10px;\n"
-"    padding-left:10px;\n"
+"    padding-left:5px;\n"
 "    padding-right:10px;\n"
 "}\n"
 "\n"
@@ -206,7 +206,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Archive Manager"))
         self.pushButton_compress_extract.setText(_translate("MainWindow", "Extract"))
         self.label.setText(_translate("MainWindow", "Archive Manager"))
         self.forward_button.setShortcut(_translate("MainWindow", "Enter"))

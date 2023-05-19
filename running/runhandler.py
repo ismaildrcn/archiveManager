@@ -44,6 +44,9 @@ class RunHandler(QtWidgets.QMainWindow):
             'archive_type': None
             }
 
+        self.parent.lineEdit_path.setTextMargins(0, 0, 0, 0)
+        icon = QtGui.QIcon(self.icon_type['folder'])
+        self.parent.lineEdit_path.addAction(icon, QtWidgets.QLineEdit.LeadingPosition)
 
         self.mainLoop()
 
