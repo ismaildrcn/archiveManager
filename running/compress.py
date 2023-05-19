@@ -1,7 +1,8 @@
 import os
 import zipfile
 import tarfile
-from rarfile import RarFile
+
+from running.loghandler import LogHandler, LOGLIST
 
 
 class Compress():
@@ -9,6 +10,8 @@ class Compress():
         self._file_list = None
         self._folder_list = None
         self._parent = parent
+
+        self.logHandler = LogHandler(self)
         self.compress_file_list = []
 
         self._folder_list = []
@@ -75,40 +78,53 @@ class Compress():
 
     def zip_file(self, path, select_files, mode):
         self.all_files_added_to_list(select_files)
+        try:
+            with zipfile.ZipFile(file=path, mode=mode) as zipHandler:
+                self.logHandler.log(message=LOGLIST.MESSAGE['1'], parameter1=path)
 
-        with zipfile.ZipFile(file=path, mode=mode) as zipHandler:
-            # Klasör içindeki tüm dosyaları arşivleme
-            for folder in self._folder_list:
-                for folder_path, folder_names, file_names in os.walk(folder):
-                    for dosya in file_names:
-                        file_path = os.path.join(folder_path, dosya)
-                        # klasör yapısını koruyarak dosyalar arşive eklendi. 'arcname'
-                        arcname = os.path.relpath(file_path, os.path.dirname(folder))  # Klasör içindeki tam konumu koru
-                    zipHandler.write(file_path, arcname=arcname)
+                # Klasör içindeki tüm dosyaları arşivleme
+                for folder in self._folder_list:
+                    for folder_path, folder_names, file_names in os.walk(folder):
+                        for file in file_names:
+                            file_path = os.path.join(folder_path, file)
+                            # klasör yapısını koruyarak dosyalar arşive eklendi. 'arcname'
+                            arcname = os.path.relpath(file_path, os.path.dirname(folder))  # Klasör içindeki tam konumu koru
+                            zipHandler.write(file_path, arcname=arcname)
+                            self.logHandler.log(message=LOGLIST.MESSAGE['2'], parameter1=file,
+                                                parameter2=path.split(os.path.sep)[-1])
 
-            # dosyaları arşivleme
-            for file in self._file_list:
-                zipHandler.write(file, arcname=os.path.basename(file))
-        print("All files have been written to the archive.")
+                # dosyaları arşivleme
+                for file in self._file_list:
+                    zipHandler.write(file, arcname=os.path.basename(file))
+            print("All files have been successfully written to the archive.")
+            self.logHandler.log(message=LOGLIST.MESSAGE['3'])
+        except Exception as error:
+            self.logHandler.log(message='An error was caught: ' + error)
+            print(error)
         zipHandler.close()
 
     def tar_file(self, path, select_files, mode):
         self.all_files_added_to_list(select_files)
+        try:
+            with tarfile.open(path, mode) as tarHandler:
+                self.logHandler.log(message=LOGLIST.MESSAGE['1'], parameter1=path)
 
-        with tarfile.open(path, mode) as tarHandler:
-            for folder in self._folder_list:
-                for folder_path, folder_names, file_names in os.walk(folder):
-                    for file in file_names:
-                        file_path = os.path.join(folder_path, file)
-                        # klasör yapısını koruyarak dosyalar arşive eklendi. 'arcname'
-                        arcname = os.path.relpath(file_path, os.path.dirname(folder))  # Klasör içindeki tam konumu koru
-                        tarHandler.add(file_path, arcname=arcname)
+                for folder in self._folder_list:
+                    for folder_path, folder_names, file_names in os.walk(folder):
+                        for file in file_names:
+                            file_path = os.path.join(folder_path, file)
+                            # klasör yapısını koruyarak dosyalar arşive eklendi. 'arcname'
+                            arcname = os.path.relpath(file_path, os.path.dirname(folder))  # Klasör içindeki tam konumu koru
+                            tarHandler.add(file_path, arcname=arcname)
+                            self.logHandler.log(message=LOGLIST.MESSAGE['2'], parameter1=file,
+                                                parameter2=path.split(os.path.sep)[-1])
 
-            for file in self._file_list:
-                tarHandler.add(file, arcname=os.path.basename(file))
-        print("All files have been written to the archive.")
+                for file in self._file_list:
+                    tarHandler.add(file, arcname=os.path.basename(file))
+                print("All files have been written to the archive.")
+                self.logHandler.log(message=LOGLIST.MESSAGE['3'])
+
+        except Exception as error:
+            self.logHandler.log(message='An error was caught: ' + error)
+            print(error)
         tarHandler.close()
-
-
-class Extract():
-    pass

@@ -10,7 +10,7 @@ from ui_files.mainWindow import Ui_MainWindow
 
 from create_archive.createArchive import create
 from fileSystem.filehandler import FileHandler
-from running.compress_extract import Compress
+from running.compress import Compress
 
 
 class RunHandler(QtWidgets.QMainWindow):
