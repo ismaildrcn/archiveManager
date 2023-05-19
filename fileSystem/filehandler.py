@@ -9,6 +9,8 @@ from PyQt5.QtWidgets import QFileDialog, QMainWindow, QListView, QTreeView
 class FileHandler(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.file_dialog = None
+        self.fType = None
 
     def select_folders(self):
         self.file_dialog = QFileDialog()
@@ -85,7 +87,7 @@ class FileHandler(QMainWindow):
 
     def fileType(self, path):
         if os.path.isfile(path):
-            type = mimetypes.guess_type(path)[0]
+            self.fType = mimetypes.guess_type(path)[0]
         elif os.path.isdir(path):
-            type = 'Folder'
-        return type
+            self.fType = 'Folder'
+        return self.fType
