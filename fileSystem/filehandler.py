@@ -28,10 +28,13 @@ class FileHandler(QMainWindow):
             paths = self.file_dialog.selectedFiles()
             return paths
 
-    def select_files(self):
+    def select_files(self, mode=None):
         self.file_dialog = QFileDialog()
         self.file_dialog.setFileMode(QFileDialog.AnyFile)
         self.file_dialog.setOption(QFileDialog.DontUseNativeDialog, True)
+        if mode == 'open':
+            self.file_dialog.setNameFilter("Archive Files (*.zip *.tar *.tar.gz *.tar.xz *.tar.bz2)")
+            self.file_dialog.setWindowTitle("Select Archive Files")
         file_view = self.file_dialog.findChild(QListView, 'listView')
 
         # to make it possible to select multiple directories:

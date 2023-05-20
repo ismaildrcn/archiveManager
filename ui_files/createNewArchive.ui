@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>305</height>
+    <height>320</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -246,15 +246,12 @@ border-bottom-right-radius:15px;
       </item>
       <item>
        <widget class="QWidget" name="widget_8" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <property name="spacing">
-          <number>0</number>
-         </property>
+        <layout class="QVBoxLayout" name="verticalLayout_7">
          <property name="leftMargin">
           <number>0</number>
          </property>
          <property name="topMargin">
-          <number>0</number>
+          <number>10</number>
          </property>
          <property name="rightMargin">
           <number>0</number>
@@ -263,50 +260,52 @@ border-bottom-right-radius:15px;
           <number>0</number>
          </property>
          <item>
-          <widget class="QWidget" name="widget_11" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLineEdit" name="archive_name">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QWidget" name="widget_11" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <property name="spacing">
+               <number>0</number>
               </property>
-              <property name="font">
-               <font>
-                <pointsize>11</pointsize>
-               </font>
+              <property name="leftMargin">
+               <number>0</number>
               </property>
-              <property name="styleSheet">
-               <string notr="true">QLineEdit{
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLineEdit" name="archive_name">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit{
 	background-color: rgb(186, 189, 182);
 	border: none;
 	border-radius:7px;
@@ -316,29 +315,95 @@ border-bottom-right-radius:15px;
 QLineEdit:focus{
 	border: 2px solid rgb(0, 103, 255);
 }</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QWidget" name="widget_12" native="true">
+             <property name="maximumSize">
+              <size>
+               <width>120</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <property name="spacing">
+               <number>0</number>
               </property>
-              <property name="alignment">
-               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              <property name="leftMargin">
+               <number>10</number>
               </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QComboBox" name="comboBox_archive_format">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>13</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(186, 189, 182);</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>.zip</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>.tar</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>.tar.gz</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>.tar.xz</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>.tar.bz2</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QWidget" name="widget_12" native="true">
-           <property name="maximumSize">
-            <size>
-             <width>120</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
+          <widget class="QWidget" name="widget_13" native="true">
+           <layout class="QVBoxLayout" name="verticalLayout_6">
             <property name="spacing">
              <number>0</number>
             </property>
             <property name="leftMargin">
-             <number>10</number>
+             <number>5</number>
             </property>
             <property name="topMargin">
              <number>0</number>
@@ -350,46 +415,10 @@ QLineEdit:focus{
              <number>0</number>
             </property>
             <item>
-             <widget class="QComboBox" name="comboBox_archive_format">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
+             <widget class="QLabel" name="label_warning">
+              <property name="text">
+               <string/>
               </property>
-              <property name="font">
-               <font>
-                <pointsize>13</pointsize>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(186, 189, 182);</string>
-              </property>
-              <item>
-               <property name="text">
-                <string>.zip</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>.tar</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>.tar.gz</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>.tar.xz</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>.tar.bz2</string>
-               </property>
-              </item>
              </widget>
             </item>
            </layout>

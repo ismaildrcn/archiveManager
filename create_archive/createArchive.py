@@ -1,8 +1,9 @@
 import os
 import sys
+
 from PyQt5.QtWidgets import QDialog, QDesktopWidget
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtCore import Qt, pyqtSignal
+
 from ui_files.createNewArchive import Ui_Form
 
 
@@ -15,8 +16,7 @@ class create(QDialog):
         self.archive_path = None
         self.main_directory = None
         self.create_button_state = False
-
-        self.create_button_state = False
+        self.selected_archive_format  = '.zip'
 
         self.parent = Ui_Form()
         self.setWindowFlag(Qt.FramelessWindowHint)
@@ -35,12 +35,8 @@ class create(QDialog):
         qtRectangle.moveCenter(centerPoint)
         self.move(qtRectangle.topLeft())
 
-        self.close_window()
-
-        # print(self.archive_path)
-
-    def close_window(self):
-        self.parent.cancel_button.clicked.connect(lambda: self.close())
+        self.parent.archive_name.textChanged.connect(self.handle_text_changed)
+        self.parent.comboBox_archive_format.currentIndexChanged.connect(self.handle_text_changed)
 
     def add_location(self):
         if sys.platform == 'linux':
@@ -49,27 +45,44 @@ class create(QDialog):
                 if os.path.isdir(os.path.join(self.main_directory, item)) and not item.startswith('.'):
                     if item[0].isupper():
                         self.parent.comboBox_archive_location.addItem(item)
-        self.parent.archive_name.textChanged.connect(self.change_button_state)
+
+        self.archive_dir_file_fist = os.listdir(os.path.join(self.main_directory, self.parent.comboBox_archive_location.currentText()))
+        # self.archive_dir_file_fist = [item.split('.')[0] for item in self.archive_dir_file_fist]
 
     def create_archive_path(self):
         self.archive_name = self.parent.archive_name.text()
         self.archive_location = self.parent.comboBox_archive_location.currentText()
         self.archive_format = self.parent.comboBox_archive_format.currentText()
-        # archive_path = self.parent.create_button.clicked.connect(self.connect_path)
-        # self.close()
+
         self.archive_path = os.path.join(self.main_directory, self.archive_location,
                                          self.archive_name + self.archive_format
                                          )
-        # if self.archive_path:
-        #     self.mainWindow.lineEdit_path.setText(self.archive_path)
+
         self.close()
         return self.archive_path
 
-    def change_button_state(self):
-        if self.parent.archive_name.text() == "":
+
+    def handle_text_changed(self, text):
+        archive_type = False
+        self.selected_archive_format = self.parent.comboBox_archive_format.currentText()
+        # kayıt lokasyonunda aynı isimde dosya var mı kontrol edilir.
+        # varsa labella uyarılır.
+        if type(text) == int:
+            archive_type = True
+            archive_type = self.parent.comboBox_archive_format.currentText()
+            text = self.parent.archive_name.text()
+        if archive_type and text + archive_type in self.archive_dir_file_fist:
+            self.parent.label_warning.setText('A file with that name already exist, Please rename')
             self.parent.create_button.setEnabled(False)
         else:
+            self.parent.label_warning.setText('')
             self.parent.create_button.setEnabled(True)
 
-    def add_item_for_archive(self):
-        pass
+
+        if text + self.selected_archive_format in self.archive_dir_file_fist:
+            self.parent.label_warning.setText('A file with that name already exist, Please rename')
+            self.parent.create_button.setEnabled(False)
+        else:
+            self.parent.label_warning.setText('')
+            self.parent.create_button.setEnabled(True)
+

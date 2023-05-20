@@ -21,11 +21,13 @@ class RunHandler(QtWidgets.QMainWindow):
         self.parent = Ui_MainWindow()
         self.parent.setupUi(self)
 
-        self.parent.treeWidget.itemChanged.connect(self.on_item_changed)
+        # self.parent.treeWidget.itemChanged.connect(self.on_item_changed)
 
         self.compress = Compress(self)
         self.createArchive = create(self)
         self.fileHandler = FileHandler(self)
+
+        self.createArchive.parent.cancel_button.clicked.connect(self.close_create_archive_form)
 
         self.parent.treeWidget.setColumnCount(3)
         self.parent.treeWidget.setColumnWidth(0, 400)
@@ -48,7 +50,7 @@ class RunHandler(QtWidgets.QMainWindow):
         self.parent.lineEdit_path.setTextMargins(0, 0, 0, 0)
         icon = QtGui.QIcon(self.icon_type['folder'])
         self.parent.lineEdit_path.addAction(icon, QtWidgets.QLineEdit.LeadingPosition)
-
+        self.parent.pushButton_compress.setVisible(False)
         self.mainLoop()
 
         # Open Window Center
@@ -68,19 +70,20 @@ class RunHandler(QtWidgets.QMainWindow):
 
         self.model = QFileSystemModel()
         self.model.setRootPath('')
-        self.parent.pushButton_compress_extract.clicked.connect(self.compress_extract_clicked)
+        self.parent.pushButton_compress.clicked.connect(self.compress_clicked)
 
     def custom_toolBar(self):
         # TODO Menu Action List
         self.menu = QMenu()
         self.new_archive_action = QAction("New Archive", self)
         self.new_archive_action.triggered.connect(self.create_archive_file)
-        open_archive_action = QAction("Open Archive", self)
+        self.open_archive_action = QAction("Open Archive", self)
+        self.open_archive_action.triggered.connect(self.open_archive_file)
 
         # Added menu item after create menu
         self.menu.addAction(self.new_archive_action)
         self.menu.addSeparator()
-        self.menu.addAction(open_archive_action)
+        self.menu.addAction(self.open_archive_action)
 
         self.parent.menu_button.setMenu(self.menu)
 
@@ -92,10 +95,21 @@ class RunHandler(QtWidgets.QMainWindow):
         self.createArchive.parent.create_button.clicked.connect(self.connect_path)
 
         # Clicked new_archive_create. changed type to pushButton_compress_extract.
-        self.parent.pushButton_compress_extract.setText('Compress')
-        self.parent.pushButton_compress_extract.setIcon(QtGui.QIcon(':icons/icons/compress.svg'))
+        self.parent.pushButton_compress.setVisible(True)
+        self.parent.pushButton_extract.setVisible(False)
 
         self.clearItem = True
+
+    def close_create_archive_form(self):
+        self.parent.pushButton_compress.setVisible(False)
+        self.parent.pushButton_extract.setVisible(True)
+        self.createArchive.close()
+
+    def open_archive_file(self):
+        self.fileHandler.select_files(mode='open')
+
+        self.parent.pushButton_compress.setVisible(False)
+        self.parent.pushButton_extract.setVisible(True)
 
     def connect_path(self):
         self.archive_path = self.createArchive.create_archive_path()
@@ -105,15 +119,18 @@ class RunHandler(QtWidgets.QMainWindow):
 
     def add_folder_clicked(self):
         paths = self.fileHandler.select_folders()
-        self.folder_list.extend(paths)
-        self.write_treeWidget(paths, icon=0)
+        if paths:
+            self.folder_list.extend(paths)
+            self.write_treeWidget(paths, icon=0)
 
     def add_file_clicked(self):
         paths = self.fileHandler.select_files()
-        self.file_list.extend(paths)
-        self.write_treeWidget(paths, icon=1)
+        if paths:
+            self.file_list.extend(paths)
+            self.write_treeWidget(paths, icon=1)
 
     def write_treeWidget(self, paths, icon):
+        self.parent.pushButton_compress.setEnabled(True)
         # TODO icon_type list
         # 0 = folder
         # 1 = file
@@ -143,8 +160,9 @@ class RunHandler(QtWidgets.QMainWindow):
 
         self.operation['save_path'] = self.archive_path
         self.operation['archive_type'] = self.createArchive.archive_format
+        # self.parent.pushButton_compress.setEnabled(True)
 
-    def compress_extract_clicked(self):
+    def compress_clicked(self):
         self.operation['file_folder_list']['folder'] = self.folder_list
         self.operation['file_folder_list']['file'] = self.file_list
         self.compress.compress_file()
@@ -159,10 +177,3 @@ class RunHandler(QtWidgets.QMainWindow):
         self.file_list = []
         self.parent.pushButton_add_folder.setEnabled(False)
         self.parent.pushButton_add_file.setEnabled(False)
-
-
-
-
-    @pyqtSlot(QTreeWidgetItem, int)
-    def on_item_changed(self, item, column):
-        self.parent.pushButton_compress_extract.setEnabled(True)
