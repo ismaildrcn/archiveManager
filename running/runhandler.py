@@ -17,6 +17,7 @@ class RunHandler(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.archive_path = None
+        self.clearItem = False
         self.parent = Ui_MainWindow()
         self.parent.setupUi(self)
 
@@ -84,6 +85,8 @@ class RunHandler(QtWidgets.QMainWindow):
         self.parent.menu_button.setMenu(self.menu)
 
     def create_archive_file(self):
+        if self.clearItem:
+            self.clearQTreeWidget(self.parent.treeWidget)
         self.createArchive.show()
         self.createArchive.add_location()
         self.createArchive.parent.create_button.clicked.connect(self.connect_path)
@@ -91,6 +94,8 @@ class RunHandler(QtWidgets.QMainWindow):
         # Clicked new_archive_create. changed type to pushButton_compress_extract.
         self.parent.pushButton_compress_extract.setText('Compress')
         self.parent.pushButton_compress_extract.setIcon(QtGui.QIcon(':icons/icons/compress.svg'))
+
+        self.clearItem = True
 
     def connect_path(self):
         self.archive_path = self.createArchive.create_archive_path()
@@ -143,6 +148,19 @@ class RunHandler(QtWidgets.QMainWindow):
         self.operation['file_folder_list']['folder'] = self.folder_list
         self.operation['file_folder_list']['file'] = self.file_list
         self.compress.compress_file()
+
+    def clearQTreeWidget(self, tree):
+        # yeni arşiv oluşturmak istendiğinde tüm itemlarım temizlenmesi sağlanır.
+        tree.clear()
+        self.createArchive.parent.archive_name.clear()
+        self.parent.lineEdit_path.clear()
+        self.createArchive.parent.comboBox_archive_location.clear()
+        self.folder_list = []
+        self.file_list = []
+        self.parent.pushButton_add_folder.setEnabled(False)
+        self.parent.pushButton_add_file.setEnabled(False)
+
+
 
 
     @pyqtSlot(QTreeWidgetItem, int)

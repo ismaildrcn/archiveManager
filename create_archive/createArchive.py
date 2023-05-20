@@ -36,7 +36,6 @@ class create(QDialog):
         self.move(qtRectangle.topLeft())
 
         self.close_window()
-        self.add_location()
 
         # print(self.archive_path)
 
