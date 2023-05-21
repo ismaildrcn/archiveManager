@@ -2,15 +2,16 @@ import os
 import datetime
 
 from PyQt5 import QtWidgets
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import QAction, QMenu, QDesktopWidget, QFileSystemModel, QTreeWidgetItem
-from PyQt5.QtCore import pyqtSlot
+from PyQt5 import QtGui
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QAction, QMenu, QDesktopWidget, QFileSystemModel
 
 from ui_files.mainWindow import Ui_MainWindow
 
 from create_archive.createArchive import create
 from fileSystem.filehandler import FileHandler
 from running.compress import Compress
+from running.extract import Extract
 
 
 class RunHandler(QtWidgets.QMainWindow):
@@ -21,9 +22,8 @@ class RunHandler(QtWidgets.QMainWindow):
         self.parent = Ui_MainWindow()
         self.parent.setupUi(self)
 
-        # self.parent.treeWidget.itemChanged.connect(self.on_item_changed)
-
         self.compress = Compress(self)
+        self.extract = Extract(self)
         self.createArchive = create(self)
         self.fileHandler = FileHandler(self)
 
@@ -37,7 +37,7 @@ class RunHandler(QtWidgets.QMainWindow):
                           'file': ':/icons/icons/empty-page.svg'}
         self.folder_list = []
         self.file_list = []
-        self.operation = {
+        self.write_operation = {
             'base_path': os.path.expanduser('~'),
             'save_path': None,
             'file_folder_list': {
@@ -78,7 +78,7 @@ class RunHandler(QtWidgets.QMainWindow):
         self.new_archive_action = QAction("New Archive", self)
         self.new_archive_action.triggered.connect(self.create_archive_file)
         self.open_archive_action = QAction("Open Archive", self)
-        self.open_archive_action.triggered.connect(self.open_archive_file)
+        self.open_archive_action.triggered.connect(self.extract.open_archive_file)
 
         # Added menu item after create menu
         self.menu.addAction(self.new_archive_action)
@@ -104,12 +104,6 @@ class RunHandler(QtWidgets.QMainWindow):
         self.parent.pushButton_compress.setVisible(False)
         self.parent.pushButton_extract.setVisible(True)
         self.createArchive.close()
-
-    def open_archive_file(self):
-        self.fileHandler.select_files(mode='open')
-
-        self.parent.pushButton_compress.setVisible(False)
-        self.parent.pushButton_extract.setVisible(True)
 
     def connect_path(self):
         self.archive_path = self.createArchive.create_archive_path()
@@ -158,13 +152,42 @@ class RunHandler(QtWidgets.QMainWindow):
             time_value = self.fileHandler.date_modified(date)
             item.setText(3, time_value)
 
-        self.operation['save_path'] = self.archive_path
-        self.operation['archive_type'] = self.createArchive.archive_format
-        # self.parent.pushButton_compress.setEnabled(True)
+        self.write_operation['save_path'] = self.archive_path
+        self.write_operation['archive_type'] = self.createArchive.archive_format
+
+    def open_archive_write_treeWidget(self, file_path):
+        parts = file_path.split("/")
+        current_item = None
+
+        for part in parts:
+            if current_item is None:
+                items = self.parent.treeWidget.findItems(part, Qt.MatchExactly | Qt.MatchRecursive)
+                if items:
+                    current_item = items[0]
+                else:
+                    current_item = QtWidgets.QTreeWidgetItem(self.parent.treeWidget, [part])
+                    current_item.setExpanded(True)
+                    if os.path.isdir(os.path.join(*parts[:parts.index(part) + 1])):
+                        current_item.setIcon(0, QtGui.QIcon(self.icon_type['folder']))  # Klasör simgesi ayarlayın
+                    else:
+                        current_item.setIcon(0, QtGui.QIcon(self.icon_type['file']))  # Klasör simgesi ayarlayın
+
+            else:
+                items = self.parent.treeWidget.findItems(part, Qt.MatchExactly, 0)
+                if items:
+                    current_item = items[0]
+                else:
+                    current_item = QtWidgets.QTreeWidgetItem(current_item, [part])
+                    current_item.setExpanded(True)
+                    if os.path.isdir(os.path.join(*parts[:parts.index(part) + 1])):
+                        current_item.setIcon(0, QtGui.QIcon(self.icon_type['folder']))  # Dosya simgesi ayarlayın
+                    else:
+                        current_item.setIcon(0, QtGui.QIcon(self.icon_type['file']))  # Dosya simgesi ayarlayın
+
 
     def compress_clicked(self):
-        self.operation['file_folder_list']['folder'] = self.folder_list
-        self.operation['file_folder_list']['file'] = self.file_list
+        self.write_operation['file_folder_list']['folder'] = self.folder_list
+        self.write_operation['file_folder_list']['file'] = self.file_list
         self.compress.compress_file()
 
     def clearQTreeWidget(self, tree):

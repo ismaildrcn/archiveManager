@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QFileDialog, QMainWindow, QListView, QTreeView
 class FileHandler(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self._parent = parent
         self.file_dialog = None
         self.fType = None
 

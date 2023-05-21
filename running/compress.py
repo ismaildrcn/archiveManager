@@ -18,35 +18,35 @@ class Compress():
         self._file_list = []
 
     def compress_file(self):
-        if self._parent.operation['archive_type'] == '.zip':
+        if self._parent.write_operation['archive_type'] == '.zip':
             self.extend_compress_file()
             self.zip_file(
                 path=self._parent.archive_path,
                 select_files=self.compress_file_list,
                 mode='w'
             )
-        elif self._parent.operation['archive_type'] == '.tar':
+        elif self._parent.write_operation['archive_type'] == '.tar':
             self.extend_compress_file()
             self.tar_file(
                 path=self._parent.archive_path,
                 select_files=self.compress_file_list,
                 mode='w'
             )
-        elif self._parent.operation['archive_type'] == '.tar.gz':
+        elif self._parent.write_operation['archive_type'] == '.tar.gz':
             self.extend_compress_file()
             self.tar_file(
                 path=self._parent.archive_path,
                 select_files=self.compress_file_list,
                 mode='w:gz'
             )
-        elif self._parent.operation['archive_type'] == '.tar.xz':
+        elif self._parent.write_operation['archive_type'] == '.tar.xz':
             self.extend_compress_file()
             self.tar_file(
                 path=self._parent.archive_path,
                 select_files=self.compress_file_list,
                 mode='w:xz'
             )
-        elif self._parent.operation['archive_type'] == '.tar.bz2':
+        elif self._parent.write_operation['archive_type'] == '.tar.bz2':
             self.extend_compress_file()
             self.tar_file(
                 path=self._parent.archive_path,
@@ -58,13 +58,13 @@ class Compress():
 
     def extend_compress_file(self):
         # dosya ve klasör pathleri tek bir arraye kaydedilir.
-        if self._parent.operation['file_folder_list']['folder'] and \
-                self._parent.operation['file_folder_list']['file']:
-            self.compress_file_list.extend(self._parent.operation['file_folder_list']['folder'])
-            self.compress_file_list.extend(self._parent.operation['file_folder_list']['file'])
-        elif self._parent.operation['file_folder_list']['folder'] and \
-                not self._parent.operation['file_folder_list']['file']:
-            self.compress_file_list.extend(self._parent.operation['file_folder_list']['folder'])
+        if self._parent.write_operation['file_folder_list']['folder'] and \
+                self._parent.write_operation['file_folder_list']['file']:
+            self.compress_file_list.extend(self._parent.write_operation['file_folder_list']['folder'])
+            self.compress_file_list.extend(self._parent.write_operation['file_folder_list']['file'])
+        elif self._parent.write_operation['file_folder_list']['folder'] and \
+                not self._parent.write_operation['file_folder_list']['file']:
+            self.compress_file_list.extend(self._parent.write_operation['file_folder_list']['folder'])
 
     def all_files_added_to_list(self, select_files):
         self._folder_list = []

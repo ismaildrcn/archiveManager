@@ -1,0 +1,7 @@
+{'archive_name': 'asd', 'path': 'running/loghandler.py', 'archive_type': 'zip', 'file_size': 1475, 'modified_time': '2023-5-19, 20:6:32'}
+{'archive_name': 'asd', 'path': 'running/compress.py', 'archive_type': 'zip', 'file_size': 5758, 'modified_time': '2023-5-19, 20:6:32'}
+{'archive_name': 'asd', 'path': 'running/extract.py', 'archive_type': 'zip', 'file_size': 68, 'modified_time': '2023-5-19, 20:6:32'}
+{'archive_name': 'asd', 'path': 'running/runhandler.py', 'archive_type': 'zip', 'file_size': 6890, 'modified_time': '2023-5-20, 18:56:44'}
+{'archive_name': 'asd', 'path': 'running/__pycache__/runhandler.cpython-38.pyc', 'archive_type': 'zip', 'file_size': 5731, 'modified_time': '2023-5-20, 18:56:44'}
+{'archive_name': 'asd', 'path': 'running/__pycache__/compress.cpython-38.pyc', 'archive_type': 'zip', 'file_size': 3596, 'modified_time': '2023-5-20, 14:31:8'}
+{'archive_name': 'asd', 'path': 'running/__pycache__/loghandler.cpython-38.pyc', 'archive_type': 'zip', 'file_size': 1735, 'modified_time': '2023-5-20, 14:31:8'}
