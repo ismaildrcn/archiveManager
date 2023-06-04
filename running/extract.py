@@ -26,6 +26,9 @@ class Extract():
 
     def extract_file(self):
         self._parent.clearQTreeWidget(self._parent.parent.treeWidget)
+        self._parent.parent.lineEdit_path.setText(self._archive_path)
+        # COMMENT disabled to lineEdit_path edit or write
+        self._parent.parent.lineEdit_path.setReadOnly(True)
         if self._archive_type == 'zip':
             self.zip_file()
             print(self.archive_file_list)
@@ -65,12 +68,15 @@ class Extract():
         pass
 
     def open_archive_file(self):
-        self._archive_path = self._parent.fileHandler.select_files(mode='open')[0]
-        self._archive_type = self._archive_path.split('.')[-1]
-        self._archive_name = self._archive_path.split('/')[-1].replace('.' + self._archive_type, '')
-        self._parent.parent.pushButton_compress.setVisible(False)
-        self._parent.parent.pushButton_extract.setVisible(True)
-        self.extract_file()
+        try:
+            self._archive_path = self._parent.fileHandler.select_files(mode='open')[0]
+            self._archive_type = self._archive_path.split('.')[-1]
+            self._archive_name = self._archive_path.split('/')[-1].replace('.' + self._archive_type, '')
+            self._parent.parent.pushButton_compress.setVisible(False)
+            self._parent.parent.pushButton_extract.setVisible(True)
+            self.extract_file()
+        except:
+            pass
 
     def write_ops_file(self, write_data):
         if not os.path.exists(self.ops_file_path):

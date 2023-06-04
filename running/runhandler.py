@@ -19,7 +19,6 @@ class RunHandler(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.archive_path = None
-        self.clearItem = False
         self.drag_and_drop_activate = False
         self.ops_data = []
         self.ops_file_path = os.path.join(os.path.dirname(__file__), '..', 'ops', 'ops_file.ops')
@@ -94,8 +93,7 @@ class RunHandler(QtWidgets.QMainWindow):
         self.parent.menu_button.setMenu(self.menu)
 
     def create_archive_file(self):
-        if self.clearItem:
-            self.clearQTreeWidget(self.parent.treeWidget)
+        self.clearQTreeWidget(self.parent.treeWidget)
         self.createArchive.show()
         self.createArchive.add_location()
         self.createArchive.parent.create_button.clicked.connect(self.connect_path)
@@ -103,8 +101,6 @@ class RunHandler(QtWidgets.QMainWindow):
         # Clicked new_archive_create. changed type to pushButton_compress_extract.
         self.parent.pushButton_compress.setVisible(True)
         self.parent.pushButton_extract.setVisible(False)
-
-        self.clearItem = True
 
     def close_create_archive_form(self):
         self.parent.pushButton_compress.setVisible(False)
@@ -116,7 +112,9 @@ class RunHandler(QtWidgets.QMainWindow):
         self.parent.widget_drag_and_drop.setVisible(True)
         self.drag_and_drop_activate = True
         self.setAcceptDrops(True)
+        # COMMENT enabled to lineEdit_path edit or write
         self.parent.lineEdit_path.setText(self.archive_path)
+        self.parent.lineEdit_path.setReadOnly(False)
         self.parent.pushButton_add_file.setEnabled(True)
         self.parent.pushButton_add_folder.setEnabled(True)
 
@@ -209,7 +207,6 @@ class RunHandler(QtWidgets.QMainWindow):
                             if dict_ops_data['path'].split(os.path.sep)[-1] == part:
                                 for i, val in enumerate(data):
                                     current_item.setText(i + 1, str(val))
-        self.clearItem = True
 
     def read_ops_file(self):
         if os.path.exists(self.ops_file_path):
