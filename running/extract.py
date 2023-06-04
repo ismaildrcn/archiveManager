@@ -12,6 +12,7 @@ class Extract():
         self._archive_type = None
         self._archive_path = None
         self.write_data = ''
+        self.ops_file_path = os.path.join(os.path.dirname(__file__), '..', 'ops', 'ops_file.ops')
 
         self._parent = parent
 
@@ -24,6 +25,7 @@ class Extract():
         }
 
     def extract_file(self):
+        self._parent.clearQTreeWidget(self._parent.parent.treeWidget)
         if self._archive_type == 'zip':
             self.zip_file()
             print(self.archive_file_list)
@@ -71,9 +73,9 @@ class Extract():
         self.extract_file()
 
     def write_ops_file(self, write_data):
-        if not os.path.exists(os.path.join(os.path.dirname(__file__), '..', 'ops', 'ops_file.ops')):
-            with open(os.path.join(os.path.dirname(__file__), '..', 'ops', 'ops_file.ops'), 'w') as ops:
+        if not os.path.exists(self.ops_file_path):
+            with open(self.ops_file_path, 'w') as ops:
                 ops.write(write_data)
         else:
-            with open(os.path.join(os.path.dirname(__file__), '..', 'ops', 'ops_file.ops'), 'w') as ops:
+            with open(self.ops_file_path, 'w') as ops:
                 ops.write(write_data)

@@ -48,25 +48,27 @@ class FileHandler(QMainWindow):
             paths = self.file_dialog.selectedFiles()
             return paths
 
-    def file_size(self, path):
+    def file_size(self, path='', mode=True, total=0):
         total = 0
-        if os.path.isfile(path):
-            total += os.stat(path).st_size
-        elif os.path.isdir(path):
-            for folder_path, directories, files in os.walk(path):
-                for file in files:
-                    file_path = os.path.join(folder_path, file)
-                    total += os.stat(file_path).st_size
-
-        total_size = len(str(total))
+        if mode:
+            if os.path.isfile(path):
+                total += os.stat(path).st_size
+            elif os.path.isdir(path):
+                for folder_path, directories, files in os.walk(path):
+                    for file in files:
+                        file_path = os.path.join(folder_path, file)
+                        total += os.stat(file_path).st_size
+            total_size = len(str(total))
+        elif not mode:
+            total_size = len(str(total))
         if total_size <= 3:
-            return total, ' b'
+            return str(round(total, 2)) + ' b'
         elif 3 < total_size <= 6:
-            return (total / 1000), ' kb'
+            return str(round((total / 1000), 2)) + ' kb'
         elif 6 < total_size <= 9:
-            return (total / 1000000), ' mb'
+            return str(round((total / 1000000), 2)) + ' mb'
         elif 9 < total_size <= 12:
-            return (total / 1000000000), ' gb'
+            return str(round((total / 1000000000), 2)) + ' gb'
 
     def date_modified(self, text):
         text = text.split(' ')

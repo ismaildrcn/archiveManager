@@ -1,4 +1,5 @@
 import os
+import json
 import datetime
 
 from PyQt5 import QtWidgets
@@ -19,6 +20,9 @@ class RunHandler(QtWidgets.QMainWindow):
         super().__init__(parent)
         self.archive_path = None
         self.clearItem = False
+        self.drag_and_drop_activate = False
+        self.ops_data = []
+        self.ops_file_path = os.path.join(os.path.dirname(__file__), '..', 'ops', 'ops_file.ops')
         self.parent = Ui_MainWindow()
         self.parent.setupUi(self)
 
@@ -51,6 +55,8 @@ class RunHandler(QtWidgets.QMainWindow):
         icon = QtGui.QIcon(self.icon_type['folder'])
         self.parent.lineEdit_path.addAction(icon, QtWidgets.QLineEdit.LeadingPosition)
         self.parent.pushButton_compress.setVisible(False)
+        self.parent.widget_drag_and_drop.setVisible(False)
+
         self.mainLoop()
 
         # Open Window Center
@@ -107,6 +113,9 @@ class RunHandler(QtWidgets.QMainWindow):
 
     def connect_path(self):
         self.archive_path = self.createArchive.create_archive_path()
+        self.parent.widget_drag_and_drop.setVisible(True)
+        self.drag_and_drop_activate = True
+        self.setAcceptDrops(True)
         self.parent.lineEdit_path.setText(self.archive_path)
         self.parent.pushButton_add_file.setEnabled(True)
         self.parent.pushButton_add_folder.setEnabled(True)
@@ -125,9 +134,9 @@ class RunHandler(QtWidgets.QMainWindow):
 
     def write_treeWidget(self, paths, icon):
         self.parent.pushButton_compress.setEnabled(True)
-        # TODO icon_type list
-        # 0 = folder
-        # 1 = file
+        # args icon_type list
+        #     0 = folder
+        #     1 = file
         for path in paths:
             item = QtWidgets.QTreeWidgetItem(self.parent.treeWidget)
 
@@ -139,8 +148,8 @@ class RunHandler(QtWidgets.QMainWindow):
                 item.setIcon(0, QtGui.QIcon(self.icon_type['file']))
 
             #Column = 1 - Dosya Boyutu
-            file_size, unit = self.fileHandler.file_size(path)
-            item.setText(1, str(str(round(file_size, 2)) + unit))
+            file_size = self.fileHandler.file_size(path=path)
+            item.setText(1, str(file_size))
 
             # Column = 2 - Type
             file_type = self.fileHandler.fileType(path)
@@ -156,6 +165,7 @@ class RunHandler(QtWidgets.QMainWindow):
         self.write_operation['archive_type'] = self.createArchive.archive_format
 
     def open_archive_write_treeWidget(self, file_path):
+        self.read_ops_file()
         parts = file_path.split("/")
         current_item = None
 
@@ -171,6 +181,14 @@ class RunHandler(QtWidgets.QMainWindow):
                         current_item.setIcon(0, QtGui.QIcon(self.icon_type['folder']))  # Klasör simgesi ayarlayın
                     else:
                         current_item.setIcon(0, QtGui.QIcon(self.icon_type['file']))  # Klasör simgesi ayarlayın
+                        for index, value in enumerate(self.ops_data):
+                            dict_ops_data = eval(value)
+                            data = [self.fileHandler.file_size(mode=False, total=dict_ops_data['file_size']),
+                                    self.fileHandler.fileType(str(dict_ops_data['path'])).split(os.path.sep)[-1],
+                                    dict_ops_data['modified_time']]
+                            if dict_ops_data['path'].split(os.path.sep)[-1] == part:
+                                for i, val in enumerate(data):
+                                    current_item.setText(i + 1, str(val))
 
             else:
                 items = self.parent.treeWidget.findItems(part, Qt.MatchExactly, 0)
@@ -183,12 +201,30 @@ class RunHandler(QtWidgets.QMainWindow):
                         current_item.setIcon(0, QtGui.QIcon(self.icon_type['folder']))  # Dosya simgesi ayarlayın
                     else:
                         current_item.setIcon(0, QtGui.QIcon(self.icon_type['file']))  # Dosya simgesi ayarlayın
+                        for index, value in enumerate(self.ops_data):
+                            dict_ops_data = eval(value)
+                            data = [self.fileHandler.file_size(mode=False, total=dict_ops_data['file_size']),
+                                    self.fileHandler.fileType(str(dict_ops_data['path'])).split(os.path.sep)[-1],
+                                    dict_ops_data['modified_time']]
+                            if dict_ops_data['path'].split(os.path.sep)[-1] == part:
+                                for i, val in enumerate(data):
+                                    current_item.setText(i + 1, str(val))
+        self.clearItem = True
 
+    def read_ops_file(self):
+        if os.path.exists(self.ops_file_path):
+            with open(self.ops_file_path, 'r') as ops:
+                self.ops_data = ops.readlines()
 
+            self.ops_data = [item.replace('\n', '') for item in self.ops_data]
     def compress_clicked(self):
         self.write_operation['file_folder_list']['folder'] = self.folder_list
         self.write_operation['file_folder_list']['file'] = self.file_list
         self.compress.compress_file()
+
+        # COMMENT clear array after compress archive
+        self.folder_list.clear()
+        self.file_list.clear()
 
     def clearQTreeWidget(self, tree):
         # yeni arşiv oluşturmak istendiğinde tüm itemlarım temizlenmesi sağlanır.
@@ -200,3 +236,23 @@ class RunHandler(QtWidgets.QMainWindow):
         self.file_list = []
         self.parent.pushButton_add_folder.setEnabled(False)
         self.parent.pushButton_add_file.setEnabled(False)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if self.drag_and_drop_activate:
+            if event.mimeData().hasUrls():
+                urls = event.mimeData().urls()
+                for url in urls:
+                    print(url.toLocalFile())
+                    if os.path.isdir(url.toLocalFile()):
+                        self.write_treeWidget([url.toLocalFile()], icon=0)
+                        self.folder_list.extend([url.toLocalFile()])
+                    elif os.path.isfile(url.toLocalFile()):
+                        self.write_treeWidget([url.toLocalFile()], icon=1)
+                        self.file_list.extend([url.toLocalFile()])
+                    
