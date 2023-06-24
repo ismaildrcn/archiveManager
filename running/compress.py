@@ -93,33 +93,6 @@ class Compress():
             print(error)
             self.logHandler.log(message=LOGLIST.ERROR['1'], parameter1=error)
 
-    def zip_file(self, path, select_files, mode):
-        self.all_files_added_to_list(select_files)
-        try:
-            with zipfile.ZipFile(file=path, mode=mode) as zipHandler:
-                self.logHandler.log(message=LOGLIST.MESSAGE['1'], parameter1=path)
-
-                # Klasör içindeki tüm dosyaları arşivleme
-                for folder in self._folder_list:
-                    for folder_path, folder_names, file_names in os.walk(folder):
-                        for file in file_names:
-                            file_path = os.path.join(folder_path, file)
-                            # klasör yapısını koruyarak dosyalar arşive eklendi. 'arcname'
-                            arcname = os.path.relpath(file_path, os.path.dirname(folder))  # Klasör içindeki tam konumu koru
-                            zipHandler.write(file_path, arcname=arcname)
-                            self.logHandler.log(message=LOGLIST.MESSAGE['2'], parameter1=file,
-                                                parameter2=path.split(os.path.sep)[-1])
-
-                # dosyaları arşivleme
-                for file in self._file_list:
-                    zipHandler.write(file, arcname=os.path.basename(file))
-            print("All files have been successfully written to the archive.")
-            self.logHandler.log(message=LOGLIST.MESSAGE['3'])
-        except Exception as error:
-            self.logHandler.log(message='An error was caught: ' + error)
-            print(error)
-        zipHandler.close()
-
     def tar_file(self, path, select_files, mode):
         self.all_files_added_to_list(select_files)
         try:
