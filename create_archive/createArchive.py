@@ -43,7 +43,6 @@ class create(QDialog):
     def add_location(self):
         if sys.platform == 'linux':
             self.main_directory = os.path.expanduser('~')
-            print("AAAAAAA")
             for index, item in enumerate(os.listdir(self._parent.operation.base_path)):
                 if os.path.isdir(os.path.join(self._parent.operation.base_path, item)) and not item.startswith('.'):
                     if item[0].isupper():

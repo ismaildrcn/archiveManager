@@ -1,21 +1,20 @@
 import os
-import json
 import pathlib
 import shutil
 
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
-from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from PyQt5.QtWidgets import QAction, QMenu, QDesktopWidget, QFileSystemModel, QTreeView
+from PyQt5.QtWidgets import QAction, QMenu, QDesktopWidget, QMessageBox, QPushButton
 from datetime import datetime
 from ui_files.mainWindow import Ui_MainWindow
 
 from create_archive.createArchive import create
 from create_archive.operation import Operation
 from fileSystem.filehandler import FileHandler
-from running.compress import Compress
-from running.extract import Extract
+from archive_process.compress import Compress
+from archive_process.extract import Extract
+from running.popup import Popup
 
 
 class RunHandler(QtWidgets.QMainWindow):
@@ -34,6 +33,7 @@ class RunHandler(QtWidgets.QMainWindow):
         self.createArchive = create(self)
         self.operation = Operation()
         self.fileHandler = FileHandler(self)
+        self.popup = Popup(self)
 
         self.createArchive.parent.cancel_button.clicked.connect(self.close_create_archive_form)
 
@@ -155,12 +155,9 @@ class RunHandler(QtWidgets.QMainWindow):
 
     def clearQTreeWidget(self, tree):
         # yeni arşiv oluşturmak istendiğinde tüm itemlarım temizlenmesi sağlanır.
-        tree.clear()
         self.createArchive.parent.archive_name.clear()
         self.parent.lineEdit_path.clear()
         self.createArchive.parent.comboBox_archive_location.clear()
-        self.folder_list = []
-        self.file_list = []
         self.parent.pushButton_add_folder.setEnabled(False)
         self.parent.pushButton_add_file.setEnabled(False)
 

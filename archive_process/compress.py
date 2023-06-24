@@ -20,22 +20,36 @@ class Compress():
         self._file_list = []
 
     def compress_file(self):
-        if self._parent.operation.type == '.zip':
-            self.create_zip()
+        try:
+            if self._parent.operation.type == '.zip':
+                self.create_zip()
 
-        elif self._parent.operation.type == '.tar':
-            self.create_tar(mode='w')
+            elif self._parent.operation.type == '.tar':
+                self.create_tar(mode='w')
 
-        elif self._parent.operation.type == '.tar.gz':
-            self.create_tar(mode='w:gz')
+            elif self._parent.operation.type == '.tar.gz':
+                self.create_tar(mode='w:gz')
 
-        elif self._parent.operation.type == '.tar.xz':
-            self.create_tar(mode='w:xz')
+            elif self._parent.operation.type == '.tar.xz':
+                self.create_tar(mode='w:xz')
 
-        elif self._parent.operation.type == '.tar.bz2':
-            self.create_tar(mode='w:bz2')
-        else:
-            print("Unidentified Archive Type")
+            elif self._parent.operation.type == '.tar.bz2':
+                self.create_tar(mode='w:bz2')
+            else:
+                print("Unidentified Archive Type")
+
+            self._parent.popup.message(
+                'Information',
+                'The archive was created successfully.',
+                buttonStatusOk=True
+            )
+        except Exception as error:
+            self.logHandler.log(message=LOGLIST.ERROR['1'], parameter1=error)
+            self._parent.popup.message(
+                'Information',
+                f'An error occurred while creating the archive: {error}',
+                buttonStatusOk=True
+            )
 
     def all_files_added_to_list(self, select_files):
         self._folder_list = []
@@ -48,32 +62,24 @@ class Compress():
                 self._file_list.append(file)
 
     def create_zip(self):
-        try:
-            with zipfile.ZipFile(
-                file=self._parent.operation.save_path,
-                mode='w',
-                compression=zipfile.ZIP_DEFLATED
-            ) as zipHandler:
-                self.logHandler.log(message=LOGLIST.MESSAGE['1'], parameter1=self.temp_archive_location)
-                for folder, sub_folders, files in os.walk(self.temp_archive_location):
-                    for file in files:
-                        file_path = os.path.join(folder, file)
-                        arc_name = os.path.relpath(file_path, self.temp_archive_location)
-                        zipHandler.write(file_path, arcname=arc_name)
-                    for sub_folder in sub_folders:
-                        folder_path = os.path.join(folder, sub_folder)
-                        arc_name = os.path.relpath(folder_path, self.temp_archive_location)
-                        zipHandler.write(folder_path, arcname=arc_name)
-            print("Write Archive")
-            zipHandler.close()
-            # COMMENT add popup
-        except Exception as error:
-            print(error)
-            self.logHandler.log(message=LOGLIST.ERROR['1'], parameter1=error)
-            zipHandler.close()
+        with zipfile.ZipFile(
+            file=self._parent.operation.save_path,
+            mode='w',
+            compression=zipfile.ZIP_DEFLATED
+        ) as zipHandler:
+            self.logHandler.log(message=LOGLIST.MESSAGE['1'], parameter1=self.temp_archive_location)
+            for folder, sub_folders, files in os.walk(self.temp_archive_location):
+                for file in files:
+                    file_path = os.path.join(folder, file)
+                    arc_name = os.path.relpath(file_path, self.temp_archive_location)
+                    zipHandler.write(file_path, arcname=arc_name)
+                for sub_folder in sub_folders:
+                    folder_path = os.path.join(folder, sub_folder)
+                    arc_name = os.path.relpath(folder_path, self.temp_archive_location)
+                    zipHandler.write(folder_path, arcname=arc_name)
+        zipHandler.close()
 
     def create_tar(self, mode):
-        try:
             with tarfile.open(
                 name=self._parent.operation.save_path,
                 mode=mode
@@ -92,10 +98,6 @@ class Compress():
                         tarHandler.add(folder_path, arcname=arc_name)
                         # COMMENT The processed sub folder is removed from the list so that it is not rewritten.
                         sub_folders.remove(sub_folder)
-            tarHandler.close()
-        except Exception as error:
-            print(error)
-            self.logHandler.log(message=LOGLIST.ERROR['1'], parameter1=error)
             tarHandler.close()
 
     def add_folder_clicked(self):

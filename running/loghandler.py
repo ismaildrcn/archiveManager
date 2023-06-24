@@ -4,13 +4,13 @@ import time
 
 class LOGLIST():
     MESSAGE = {
-        '1': "The archive file named '&parameter1' has been created.",
-        '2': "The file '&parameter1' has been added to the '&parameter2' archive.",
-        '3': "All files have been successfully written to the archive."
+        '1': "The archive_process file named '&parameter1' has been created.",
+        '2': "The file '&parameter1' has been added to the '&parameter2' archive_process.",
+        '3': "All files have been successfully written to the archive_process."
     }
 
     ERROR = {
-        '1': "An error occurred while creating the archive: &parameter1"
+        '1': "An error occurred while creating the archive_process: &parameter1 "
     }
 
 

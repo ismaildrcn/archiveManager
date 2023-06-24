@@ -89,7 +89,5 @@ class Extract():
         else:
             with open(self.ops_file_path, 'w') as ops:
                 ops.write(write_data)
-
-    # extact çözüldü.
     # time column ayarlanacak değer hatalı runhandler içerisinde bak.
     # tarfile için extract fonksiyonu yazmıştım onun için brachleri kontrol et
