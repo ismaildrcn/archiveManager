@@ -9,6 +9,10 @@ class LOGLIST():
         '3': "All files have been successfully written to the archive."
     }
 
+    ERROR = {
+        '1': "An error occurred while creating the archive: &parameter1"
+    }
+
 
 class LogHandler():
     def __init__(self, parent=None):

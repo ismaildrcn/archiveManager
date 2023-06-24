@@ -1,7 +1,9 @@
 import os
 import time
+from datetime import datetime
 import mimetypes
 
+from fileSystem.filetypelist import FileType
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMainWindow, QListView, QTreeView
 
@@ -9,9 +11,12 @@ from PyQt5.QtWidgets import QFileDialog, QMainWindow, QListView, QTreeView
 class FileHandler(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.extension = None
         self._parent = parent
         self.file_dialog = None
         self.fType = None
+
+        self.fileType = FileType()
 
     def select_folders(self):
         self.file_dialog = QFileDialog()
@@ -49,8 +54,8 @@ class FileHandler(QMainWindow):
             return paths
 
     def file_size(self, path='', mode=True, total=0):
-        total = 0
         if mode:
+            total = 0
             if os.path.isfile(path):
                 total += os.stat(path).st_size
             elif os.path.isdir(path):
@@ -62,25 +67,28 @@ class FileHandler(QMainWindow):
         elif not mode:
             total_size = len(str(total))
         if total_size <= 3:
-            return str(round(total, 2)) + ' b'
+            return str(total) + ' b'
         elif 3 < total_size <= 6:
-            return str(round((total / 1000), 2)) + ' kb'
+            return str(int(total) / 1000) + ' kb'
         elif 6 < total_size <= 9:
-            return str(round((total / 1000000), 2)) + ' mb'
+            return str(int(total) / 1000000) + ' mb'
         elif 9 < total_size <= 12:
-            return str(round((total / 1000000000), 2)) + ' gb'
+            return str(int(total) / 1000000000) + ' gb'
 
-    def date_modified(self, text):
-        text = text.split(' ')
-        file_modified_date, file_modified_time = text[0], text[1].split('.')[0]
-        date_now, time_now = time.strftime('%Y-%m-%d'), time.strftime('%H:%M:%S')
+    def date_modified(self, text, mode=False):
+        if not mode:
+            text = text.split(' ')
+            file_modified_date, file_modified_time = text[0], text[1].split('.')[0]
+            date_now, time_now = time.strftime('%Y-%m-%d'), time.strftime('%H:%M:%S')
 
-        if not file_modified_date.split('-')[0] != date_now.split('-')[0] and \
-                file_modified_date.split('-')[1] != date_now.split('-')[1] and \
-                file_modified_date.split('-')[2] != date_now.split('-')[2]:
-            return file_modified_date.replace('-', '.')
+            if not file_modified_date.split('-')[0] != date_now.split('-')[0] and \
+                    file_modified_date.split('-')[1] != date_now.split('-')[1] and \
+                    file_modified_date.split('-')[2] != date_now.split('-')[2]:
+                return file_modified_date.replace('-', '.')
+            else:
+                return ':'.join(file_modified_time.split(':')[:2])
         else:
-            return ':'.join(file_modified_time.split(':')[:2])
+            datetime.strptime(text, )
 
     def file_name_modified(self, path):
         if os.path.isdir(path):
@@ -91,9 +99,23 @@ class FileHandler(QMainWindow):
             file_name = None
         return file_name
 
-    def fileType(self, path):
-        if os.path.isfile(path):
-            self.fType = mimetypes.guess_type(path)[0]
-        elif os.path.isdir(path):
-            self.fType = 'Folder'
-        return self.fType
+    def select_file_type(self, path,  mode=True):
+        if not mode:
+            self.extension = path[1:].upper()
+            if self.extension in self.fileType.fTypes.keys():
+                self.fType = self.fileType.fTypes[self.extension]
+            else:
+                self.fType = 'Undefined'
+            return self.fType
+
+        else:
+            if os.path.isfile(path):
+                self.fType = mimetypes.guess_type(path)[0]
+                if self.fType == None:
+                    self.fType = 'Undefined'
+                print("File Type: ", self.fType)
+            elif os.path.isdir(path):
+                self.fType = 'Folder'
+            else:
+                self.fType = 'Undefined'
+            return self.fType

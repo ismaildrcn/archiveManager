@@ -10,6 +10,8 @@ from ui_files.createNewArchive import Ui_Form
 class create(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.archive_dir_file_fist = None
+        self._parent = parent
         self.archive_format = None
         self.archive_location = None
         self.archive_name = None
@@ -41,25 +43,26 @@ class create(QDialog):
     def add_location(self):
         if sys.platform == 'linux':
             self.main_directory = os.path.expanduser('~')
-            for index, item in enumerate(os.listdir(self.main_directory)):
-                if os.path.isdir(os.path.join(self.main_directory, item)) and not item.startswith('.'):
+            print("AAAAAAA")
+            for index, item in enumerate(os.listdir(self._parent.operation.base_path)):
+                if os.path.isdir(os.path.join(self._parent.operation.base_path, item)) and not item.startswith('.'):
                     if item[0].isupper():
                         self.parent.comboBox_archive_location.addItem(item)
 
-        self.archive_dir_file_fist = os.listdir(os.path.join(self.main_directory, self.parent.comboBox_archive_location.currentText()))
-        # self.archive_dir_file_fist = [item.split('.')[0] for item in self.archive_dir_file_fist]
+        self.archive_dir_file_fist = os.listdir(os.path.join(self._parent.operation.base_path, self.parent.comboBox_archive_location.currentText()))
 
-    def create_archive_path(self):
-        self.archive_name = self.parent.archive_name.text()
-        self.archive_location = self.parent.comboBox_archive_location.currentText()
-        self.archive_format = self.parent.comboBox_archive_format.currentText()
+    def set_archive_detail(self):
+        self._parent.operation.location = self.parent.comboBox_archive_location.currentText()
+        self._parent.operation.name = self.parent.archive_name.text()
+        self._parent.operation.type = self.parent.comboBox_archive_format.currentText()
 
-        self.archive_path = os.path.join(self.main_directory, self.archive_location,
-                                         self.archive_name + self.archive_format
-                                         )
+        self._parent.operation.save_path = os.path.join(
+            self._parent.operation.base_path,
+            self._parent.operation.location,
+            self._parent.operation.name + self._parent.operation.type
+        )
 
         self.close()
-        return self.archive_path
 
 
     def handle_text_changed(self, text):

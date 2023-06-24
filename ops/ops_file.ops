@@ -1,3 +1,4 @@
-{'archive_name': 'deneme', 'path': 'fileSystem/filehandler.py', 'archive_type': 'zip', 'file_size': 3812, 'modified_time': '2023-5-21, 14:15:24'}
-{'archive_name': 'deneme', 'path': 'fileSystem/__pycache__/filehandler.cpython-38.pyc', 'archive_type': 'zip', 'file_size': 3361, 'modified_time': '2023-5-21, 14:15:24'}
-{'archive_name': 'deneme', 'path': 'main.py', 'archive_type': 'zip', 'file_size': 267, 'modified_time': '2023-5-19, 17:7:18'}
+{'archive_name': 'asdqs', 'path': 'UI/mainWindow.ui', 'archive_type': 'zip', 'file_size': 106170, 'modified_time': '2023-3-12, 16:20:34'}
+{'archive_name': 'asdqs', 'path': 'UI/main.py', 'archive_type': 'zip', 'file_size': 57936, 'modified_time': '2023-2-11, 17:36:48'}
+{'archive_name': 'asdqs', 'path': 'UI/yedek.ui', 'archive_type': 'zip', 'file_size': 106162, 'modified_time': '2023-2-11, 17:43:52'}
+{'archive_name': 'asdqs', 'path': 'mail.py', 'archive_type': 'zip', 'file_size': 1490, 'modified_time': '2023-3-12, 14:34:54'}

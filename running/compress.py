@@ -1,4 +1,5 @@
 import os
+import shutil
 import zipfile
 import tarfile
 
@@ -18,13 +19,8 @@ class Compress():
         self._file_list = []
 
     def compress_file(self):
-        if self._parent.write_operation['archive_type'] == '.zip':
-            self.extend_compress_file()
-            self.zip_file(
-                path=self._parent.archive_path,
-                select_files=self.compress_file_list,
-                mode='w'
-            )
+        if self._parent.operation.type == '.zip':
+            self.create_zip()
         elif self._parent.write_operation['archive_type'] == '.tar':
             self.extend_compress_file()
             self.tar_file(
@@ -75,6 +71,27 @@ class Compress():
                 self._folder_list.append(file)
             elif os.path.isfile(file):
                 self._file_list.append(file)
+
+    def create_zip(self):
+        try:
+            with zipfile.ZipFile(
+                file=self._parent.operation.save_path,
+                mode='w',
+                compression=zipfile.ZIP_DEFLATED
+            ) as zipHandler:
+                self.logHandler.log(message=LOGLIST.MESSAGE['1'], parameter1=self.temp_archive_location)
+                for folder, sub_folders, files in os.walk(self.temp_archive_location):
+                    for file in files:
+                        file_path = os.path.join(folder, file)
+                        zipHandler.write(file_path, os.path.relpath(file_path, self.temp_archive_location))
+                    for sub_folder in sub_folders:
+                        folder_path = os.path.join(folder, sub_folder)
+                        zipHandler.write(folder_path, os.path.relpath(folder_path, self.temp_archive_location))
+            print("Write Archive")
+        #     COMMENT add popup
+        except Exception as error:
+            print(error)
+            self.logHandler.log(message=LOGLIST.ERROR['1'], parameter1=error)
 
     def zip_file(self, path, select_files, mode):
         self.all_files_added_to_list(select_files)
@@ -128,3 +145,50 @@ class Compress():
             self.logHandler.log(message='An error was caught: ' + error)
             print(error)
         tarHandler.close()
+
+    def add_folder_clicked(self):
+        paths = self._parent.fileHandler.select_folders()
+        if paths:
+            self.move_folder_or_files(paths)
+
+    def add_file_clicked(self):
+        paths = self._parent.fileHandler.select_files()
+        if paths:
+            self.move_folder_or_files(paths)
+
+    def move_folder_or_files(self, files):
+        if not os.path.exists(self._parent.temp_file_path):
+            os.mkdir(self._parent.temp_file_path)
+
+        self.temp_archive_location = os.path.join(
+            self._parent.temp_file_path,
+            self._parent.operation.name
+        )
+        if not os.path.exists(self.temp_archive_location):
+            os.mkdir(self.temp_archive_location)
+
+        for item in files:
+            if os.path.isdir(item):
+                destination_folder_path = os.path.join(
+                    self.temp_archive_location,
+                    item.split(os.path.sep)[-1]
+                )
+                try:
+                    shutil.copytree(
+                        item,
+                        destination_folder_path
+                    )
+                except:
+                    self._parent.write_treeView(self.temp_archive_location)
+            elif os.path.isfile(item):
+                destination_file_path = os.path.join(
+                    self.temp_archive_location,
+                    item.split(os.path.sep)[-1]
+                )
+                shutil.copy(
+                    item,
+                    destination_file_path
+                )
+        self._parent.parent.pushButton_compress.setEnabled(True)
+
+        self._parent.write_treeView(self.temp_archive_location)

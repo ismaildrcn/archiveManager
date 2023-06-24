@@ -1,0 +1,75 @@
+# Add from from https://en.wikipedia.org/wiki/List_of_filename_extensions
+
+class FileType():
+    fTypes = {
+        # Document File Types
+        'DOC': 'MS Word Document',
+        'DOCX': 'MS Word Document',
+        'HTML': 'HyperText Markup Language File',
+        'ODT': 'OpenDocument Text',
+        'PDF': 'Portable Document Format',
+        'XLS': 'MS Excel File',
+        'XLSX': 'MS Excel File',
+        'PPT': 'MS PowerPoint File',
+        'PPTX': 'MS PowerPoint File',
+        'TXT': 'Text File',
+        # Archive File Types
+        'ZIP': 'Archive File',
+        'ZIPX': 'Archive File',
+        'RAR': 'Archive File',
+        '7Z': 'Archive File',
+        'GZ': 'Archive File',
+        'GZIP': 'Archive File',
+        'TAR': 'Archive File',
+        'TAR.GZ': 'Archive File',
+        'TAR.XZ': 'Archive File',
+        'TAR.BZ2': 'Archive File',
+        'XZ': 'Archive File',
+        'BZ2': 'Archive File',
+        'TZ': 'Archive File',
+        'TGZ': 'Archive File',
+        'TAZ': 'Archive File',
+        'ISO': 'ISO Disk Image File',
+        # Image File Type
+        'JPG': 'Joint Photographic Experts Group',
+        'JPEG': 'Joint Photographic Experts Group',
+        'PNG': 'Portable Network Graphics',
+        'GIF': 'Graphics Interchange Format',
+        'TIFF': 'Tagged Image File',
+        'PSD': 'Photoshop Document',
+        'EPS': 'Encapsulated Postscript',
+        'AI': 'Adobe Illustrator Document',
+        'INDD': 'Adobe Indesign Document',
+        'RAW': 'Raw Image Formats',
+        'CR2': 'Canon RAW 2',
+        'CRW': 'Canon RAW',
+        'NEF': 'Nikon Electric Format',
+        'PEF': 'Pentax Electronic Format',
+        'UI': 'User Interface File',
+        # File extensions for video formats
+        'AVI': 'Audio Video Interleave Video File',
+        'MPG': 'Moving Picture Experts Group Video File',
+        'MPEG': 'Moving Picture Experts Group Video File',
+        'WMV': 'Windows Media Video File',
+        'VOB': 'DVD Video Object File',
+        'FLV': 'Adobe Flash File',
+        '3GP': 'Third Generation Partnership Project Multimedia File',
+        # File extensions for audio formats
+        'MP3': 'MPEG-1 Audio Layer 3 Audio File',
+        'WMA': 'Windows Media Audio File',
+        'WPL': 'Windows Media Player Playlist File',
+        'WAV': 'Waveform Audio File',
+        'MID': 'User Interface File',
+        'MIDI': 'Musical Instrument Digital Interface Audio File',
+        # File extensions for programming files
+        'C': 'C and C++ Source Code Files',
+        'JAVA': 'Java Source Code File',
+        'PY': 'Python Script File',
+        'CS': 'Visual C# Source Code File',
+        'PHP': 'Hypertext Preprocessor Script File',
+        'SWIFT': 'Swift Source Code File',
+        'VB': 'Visual Basic File',
+
+        # Custom Files
+        'OPS': 'OPS File'
+    }

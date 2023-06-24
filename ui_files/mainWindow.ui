@@ -391,18 +391,7 @@ QLineEdit:focus{
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_8">
              <item>
-              <widget class="QTreeWidget" name="treeWidget">
-               <property name="font">
-                <font>
-                 <pointsize>13</pointsize>
-                </font>
-               </property>
-               <column>
-                <property name="text">
-                 <string notr="true">1</string>
-                </property>
-               </column>
-              </widget>
+              <widget class="QTreeView" name="treeView"/>
              </item>
             </layout>
            </widget>
